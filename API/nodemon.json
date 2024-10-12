@@ -4,5 +4,5 @@
         "index.ts"
     ],
     "ext": "ts",
-    "exec": "ts-node src/index.ts"
+    "exec": "ts-node index.ts"
 }
