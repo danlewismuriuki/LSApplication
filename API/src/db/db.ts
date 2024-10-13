@@ -17,7 +17,8 @@ if (
 
 const sequelize = new Sequelize(process.env.DB, process.env.USERNAME, process.env.PASSWORD, {
     host: process.env.HOST,
-    //dialect: process.env.DB_DIALECT || 'postgres',
-    dialect: (process.env.DB_DIALECT || 'postgres') as 'postgres', // | 'postgres' | 'sqlite' | 'mariadb' | 'mssql',
+    dialect: (process.env.DB_DIALECT || 'postgres') as 'postgres', // || 'postgres'
 
 });
+
+export default sequelize;
