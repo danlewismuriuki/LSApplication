@@ -1,0 +1,62 @@
+# Node modules
+node_modules/
+
+# IDE and Editor Configurations
+.vscode/
+
+# Configuration files that are user-specific
+.npmrc
+.editorconfig
+
+# Ignore public build artifacts if not needed
+public/
+
+# Optional: You can uncomment the following if you don't want to track package-lock.json
+# package-lock.json
+
+# Optional: Uncomment to ignore ESLint and Prettier configurations if user-specific
+# .eslintrc.cjs
+# .prettierrc
+
+
+
+
+
+
+.DS_Store
+.thumbs.db
+node_modules
+
+# Quasar core related directories
+.quasar
+/dist
+/quasar.config.*.temporary.compiled*
+
+# Cordova related directories and files
+/src-cordova/node_modules
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www
+
+# Capacitor related directories and files
+/src-capacitor/www
+/src-capacitor/node_modules
+
+# BEX related directories and files
+/src-bex/www
+/src-bex/js/core
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# local .env files
+.env.local*
