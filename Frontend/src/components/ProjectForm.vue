@@ -23,6 +23,8 @@ export default defineComponent({
 
     const submitForm = async () => {
       const project: Project = {
+        id: 0,
+        customerId: 0,
         name: projectName.value,
         description: projectDescription.value,
       };
