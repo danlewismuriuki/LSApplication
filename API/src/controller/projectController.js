@@ -3,7 +3,8 @@ const Customer = require('../models/customer');
 
 exports.createProject = async (req, res) => {
     try {
-        const project = await Project.create({ ...req.body, customerId: req.params.customerId });
+        const customerId = req.params.customerId.trim(); 
+        const project = await Project.create({ ...req.body, customerId: customerId });
         res.status(201).json(project);
     } catch (error) {
         res.status(400).json({ error: error.message });
