@@ -1,0 +1,69 @@
+/* src/css/styles.css */
+
+h2 {
+  margin-top: 20px;
+  color: #333;
+  text-align: center; /* Center the heading */
+}
+
+.common-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.q-table {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px auto; /* Center the table */
+  overflow: hidden; /* Prevent border radius from being cut off */
+  width: 90%; /* Set a width for the tables */
+}
+
+.q-table th {
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #007bff; /* Use a primary color for the header */
+  color: white; /* Text color for better contrast */
+  padding: 12px; /* Add padding for better spacing */
+}
+
+.q-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  color: #555; /* Set a softer color for table data */
+}
+
+.q-table tr:hover {
+  background-color: rgba(0, 123, 255, 0.1); /* Lighten the hover color */
+}
+
+.message {
+  color: green; /* Change the color for success messages */
+  text-align: center;
+  margin-top: 10px;
+}
+
+.button {
+  display: inline-block; /* Allow margin around the button */
+  padding: 10px 20px;
+  margin: 10px 0; /* Margin for spacing */
+  background-color: #007bff; /* Primary color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.table-container {
+  padding: 20px; /* Add padding for better spacing */
+}

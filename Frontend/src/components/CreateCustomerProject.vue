@@ -1,131 +1,229 @@
 <template>
-  <q-form @submit.prevent="submitForm" class="common-form">
-    <q-input v-model="customerName" label="Customer Name" required />
-    <q-input v-model="customerEmail" label="Customer Email" required />
-    <q-input v-model="customerAddress" label="Customer Address" required />
+  <div>
+    <q-form @submit.prevent="submitForm" class="common-form">
+      <q-input v-model="customerName" label="Customer Name" required />
+      <q-input
+        v-model="customerEmail"
+        label="Customer Email"
+        type="email"
+        required
+      />
+      <q-input v-model="customerAddress" label="Customer Address" required />
 
-    <q-input v-model="projectName" label="Project Name" required />
-    <q-input
-      v-model="projectDescription"
-      label="Project Description"
-      type="textarea"
-      required
-    />
+      <q-input v-model="projectName" label="Project Name" required />
+      <q-input
+        v-model="projectDescription"
+        label="Project Description"
+        required
+      />
 
-    <q-btn type="submit" label="Create Customer and Project" />
-  </q-form>
+      <q-btn type="submit" label="Create Customer and Project" />
 
-  <q-table :rows="customers" :columns="customerColumns" />
-  <q-table :rows="projects" :columns="projectColumns" />
+      <!-- Display success or error message -->
+      <p v-if="message">{{ message }}</p>
+    </q-form>
+
+    <h2>Customers</h2>
+    <div class="table-container">
+      <q-table
+        :rows="customers"
+        :columns="customerColumns"
+        row-key="id"
+        no-data-label="No customers found"
+      />
+    </div>
+
+    <h2>Projects</h2>
+    <div class="table-container">
+      <q-table
+        :rows="projects"
+        :columns="projectColumns"
+        row-key="id"
+        no-data-label="No projects found"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
-
-// Define interfaces for your data
-interface Customer {
-  id: number;
-  name: string;
-  email: string;
-  address: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  customerId: number;
-}
-
-interface Column {
-  name: string;
-  label: string;
-  align?: 'left' | 'right' | 'center';
-  field: string | ((row: Customer | Project) => string | number); // Updated type definition
-}
+import { Customer, Project } from '../types/index'; // Import types
+import '../css/styles.css';
 
 export default defineComponent({
   setup() {
-    const customerName = ref('');
-    const customerEmail = ref('');
-    const customerAddress = ref('');
-    const projectName = ref('');
-    const projectDescription = ref('');
+    const customerName = ref<string>('');
+    const customerEmail = ref<string>('');
+    const customerAddress = ref<string>('');
+    const projectName = ref<string>('');
+    const projectDescription = ref<string>('');
+    const message = ref<string>(''); // To display success/error messages
+    const customers = ref<Customer[]>([]); // Reactive array for customers
+    const projects = ref<Project[]>([]); // Reactive array for projects
 
-    const customers = ref<Customer[]>([]);
-    const projects = ref<Project[]>([]);
+    // Define table columns
+    const customerColumns = [
+      {
+        name: 'id',
+        label: 'ID',
+        align: 'left' as const,
+        field: 'id',
+        sortable: true,
+      },
+      {
+        name: 'name',
+        label: 'Name',
+        align: 'left' as const,
+        field: 'name',
+        sortable: true,
+      },
+      {
+        name: 'email',
+        label: 'Email',
+        align: 'left' as const,
+        field: 'email',
+        sortable: true,
+      },
+      {
+        name: 'address',
+        label: 'Address',
+        align: 'left' as const,
+        field: 'address',
+        sortable: true,
+      },
+      {
+        name: 'createdAt',
+        label: 'Created At',
+        align: 'left' as const,
+        field: 'createdAt',
+        sortable: true,
+      },
+    ];
 
-    const submitForm = async () => {
+    const projectColumns = [
+      {
+        name: 'id',
+        label: 'ID',
+        align: 'left' as const,
+        field: 'id',
+        sortable: true,
+      },
+      {
+        name: 'name',
+        label: 'Project Name',
+        align: 'left' as const,
+        field: 'name',
+        sortable: true,
+      },
+      {
+        name: 'description',
+        label: 'Description',
+        align: 'left' as const,
+        field: 'description',
+        sortable: true,
+      },
+      {
+        name: 'customerId',
+        label: 'Customer ID',
+        align: 'left' as const,
+        field: 'customerId',
+        sortable: true,
+      },
+      {
+        name: 'createdAt',
+        label: 'Created At',
+        align: 'left' as const,
+        field: 'createdAt',
+        sortable: true,
+      },
+    ];
+
+    // Function to fetch customers and projects from the API
+    const fetchData = async () => {
       try {
-        // Step 1: Create Customer
-        const customerResponse = await axios.post<Customer>('/api/customers', {
-          name: customerName.value,
-          email: customerEmail.value,
-          address: customerAddress.value,
-        });
+        const customerResponse = await axios.get(
+          'http://localhost:3000/api/customers'
+        );
+        customers.value = customerResponse.data;
 
-        const customerId = customerResponse.data.id; // Assuming the ID is returned after creation
+        const projectResponse = await axios.get(
+          'http://localhost:3000/api/projects'
+        );
+        projects.value = projectResponse.data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-        // Step 2: Create Project
-        await axios.post<Project>('/api/projects', {
-          customerId, // Attach the created customer ID
+    // Function to handle errors
+    const handleError = (error: unknown) => {
+      if (axios.isAxiosError(error)) {
+        message.value =
+          'Error: ' + (error.response?.data.message || error.message); // Display Axios error message
+      } else {
+        message.value =
+          'An unexpected error occurred: ' + (error as Error).message;
+      }
+      console.error('Error:', error); // Log the error
+    };
+
+    // Function to submit the form
+    const submitForm = async () => {
+      const customer: Customer = {
+        id: 0,
+        name: customerName.value,
+        email: customerEmail.value,
+        address: customerAddress.value,
+      };
+
+      try {
+        // Create customer
+        const customerResponse = await axios.post(
+          'http://localhost:3000/api/customers',
+          customer
+        );
+        const createdCustomer = customerResponse.data;
+
+        // Optimistically update customers array
+        customers.value.push(createdCustomer);
+
+        const project: Project = {
+          id: 0,
           name: projectName.value,
           description: projectDescription.value,
-        });
+          customerId: createdCustomer.id, // Use the created customer ID
+        };
 
-        // Reset the form fields
+        // Create the project
+        const projectResponse = await axios.post(
+          'http://localhost:3000/api/projects',
+          project
+        );
+        const createdProject = projectResponse.data;
+
+        // Optimistically update projects array
+        projects.value.push(createdProject);
+
+        // Set success message
+        message.value = 'Customer and Project created successfully!';
+
+        // Optionally, reset the form fields
         customerName.value = '';
         customerEmail.value = '';
         customerAddress.value = '';
         projectName.value = '';
         projectDescription.value = '';
 
-        // Fetch updated lists
-        await fetchCustomersAndProjects();
+        // Fetch the updated project list
+        await fetchData(); // Fetch the latest projects from the database
       } catch (error) {
-        console.error('Error creating customer or project:', error);
+        handleError(error);
       }
     };
 
-    const fetchCustomersAndProjects = async () => {
-      try {
-        const customerResponse = await axios.get<Customer[]>('/api/customers');
-        customers.value = customerResponse.data;
-
-        const projectResponse = await axios.get<Project[]>('/api/projects');
-        projects.value = projectResponse.data;
-      } catch (error) {
-        console.error('Error fetching customers or projects:', error);
-      }
-    };
-
-    // Fetch customers and projects when the component mounts
-    onMounted(fetchCustomersAndProjects);
-
-    const customerColumns: Column[] = [
-      { name: 'name', label: 'Customer Name', align: 'left', field: 'name' },
-      { name: 'email', label: 'Email', align: 'left', field: 'email' },
-      { name: 'address', label: 'Address', align: 'left', field: 'address' },
-    ];
-
-    const projectColumns: Column[] = [
-      { name: 'name', label: 'Project Name', align: 'left', field: 'name' },
-      {
-        name: 'description',
-        label: 'Description',
-        align: 'left',
-        field: 'description',
-      },
-      {
-        name: 'customerId',
-        label: 'Customer ID',
-        align: 'left',
-        field: 'customerId',
-      },
-    ];
+    // Fetch initial data on component mount
+    onMounted(fetchData);
 
     return {
       customerName,
@@ -133,12 +231,19 @@ export default defineComponent({
       customerAddress,
       projectName,
       projectDescription,
+      message,
       customers,
       projects,
-      submitForm,
       customerColumns,
       projectColumns,
+      submitForm,
     };
   },
 });
 </script>
+
+<style scoped>
+h2 {
+  margin-top: 20px;
+}
+</style>
