@@ -1,28 +1,3 @@
-# Node modules
-node_modules/
-
-# IDE and Editor Configurations
-.vscode/
-
-# Configuration files that are user-specific
-.npmrc
-.editorconfig
-
-# Ignore public build artifacts if not needed
-public/
-
-# Optional: You can uncomment the following if you don't want to track package-lock.json
-# package-lock.json
-
-# Optional: Uncomment to ignore ESLint and Prettier configurations if user-specific
-# .eslintrc.cjs
-# .prettierrc
-
-
-
-
-
-
 .DS_Store
 .thumbs.db
 node_modules

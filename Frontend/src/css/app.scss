@@ -1,1 +1,18 @@
-// app global css in SCSS form
+.common-form {
+  max-width: 600px; // Set a maximum width for the form
+  margin: 0 auto; // Center the form on the page
+  padding: 20px; // Add some padding for better spacing
+  border: 1px solid #ddd; // Light border around the form
+  border-radius: 10px; // Rounded corners for the form
+  background-color: #f9f9f9; // Light background color
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Soft shadow for depth
+}
+
+.common-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.common-form .q-input {
+  margin-bottom: 1rem;
+}
